@@ -25,19 +25,53 @@ const post = () => {
 }
 
 const put = () => {
+    const data = {
+        id: 1,
+        title: 'foo',
+        body: 'bar',
+        userId: 1,
+    };
+    axios.put('https://jsonplaceholder.typicode.com/posts/1', data)
+        .then((response) => {
+            renderOutput(response);
+        });
     console.log('put');
 }
 
 const patch = () => {
+    const data = {
+
+        title: 'fasdawd'
+
+    };
+    axios.patch('https://jsonplaceholder.typicode.com/posts/1', data)
+        .then((response) => { renderOutput(response); });
     console.log('patch');
 }
 
 const del = () => {
+    axios.delete('https://jsonplaceholder.typicode.com/posts/2', data)
+        .then((response) => { renderOutput(response); });
     console.log('delete');
 }
 
 const multiple = () => {
-    console.log('multiple');
+    Promise.all([
+        axios.get('https://jsonplaceholder.typicode.com/posts'),
+        axios.get('https://jsonplaceholder.typicode.com/users?_limit=3')
+    ]).then((response) => {
+
+        console.log(response);
+        console.table(response[1].data);
+        console.log('-----');
+        console.table(response[1].data[0].address);
+        console.table(response[1].data[1].address);
+        console.table(response[1].data[2].address);
+        // console.table(response[1].config);
+        // console.table(response[1].headers);
+        // console.table(response[1].request);
+    });
+
 }
 
 const transform = () => {
