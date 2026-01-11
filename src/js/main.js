@@ -75,14 +75,56 @@ const multiple = () => {
 }
 
 const transform = () => {
+    const config = {
+        params: {
+            _limit: 5
+        },
+        transformResponse: [function (data) {
+            const payload = JSON.parse(data).map(o => {
+                return {
+                    ...o,
+                    is_selected: false,
+                }
+            });
+            return payload;
+        }]
+    }
+    axios.get('https://jsonplaceholder.typicode.com/posts', config)
+        .then((response) => {
+            renderOutput(response);
+        });
     console.log('transform');
 }
 
 const errorHandling = () => {
+
+    axios.get('https://jsonplaceholder.typicode.com/postsz')
+        .then((response) => renderOutput(response))
+        .catch((error) => {
+            alert('Deu ruim em!: ' + error.message);
+            renderOutput(error.response);
+            console.log(error.response);
+            console.log(error.response.data);
+            console.log(error.response.status);
+        });
+
     console.log('errorHandling');
 }
 
 const cancel = () => {
+    const controller = new AbortController();
+    const config = {
+        params: {
+            _limits: 5
+
+        },
+        signal: controller.signal
+
+    };
+    axios.get('https://jsonplaceholder.typicode.com/posts', config)
+        .then((response) => renderOutput(response))
+
+    controller.abort();
     console.log('cancel');
 }
 
